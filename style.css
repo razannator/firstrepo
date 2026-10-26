@@ -1,0 +1,480 @@
+/* ==========================================================================
+   Developer Profile - Merriweather Typography & Responsive Stylesheet
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CSS Variables & Design Tokens (Light & Dark Theme)
+   -------------------------------------------------------------------------- */
+:root {
+  --font-main: 'Merriweather', Georgia, serif;
+  
+  /* Light Theme Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9fb;
+  --text-primary: #121212;
+  --text-secondary: #4a4a4a;
+  --text-muted: #666666;
+  --accent-color: #1a56db;
+  --card-bg: #ffffff;
+  --photo-bg: #dccdba;
+  --border-color: #e5e7eb;
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 12px 28px rgba(0, 0, 0, 0.12);
+  --toggle-bg: #f1f3f5;
+  --toggle-border: #d1d5db;
+  --toggle-icon: #2d3748;
+
+  /* Spacing & Sizing */
+  --container-max-width: 1040px;
+  --radius-card: 24px;
+  --transition-speed: 0.35s;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme Colors */
+  --bg-primary: #121316;
+  --bg-secondary: #1a1c22;
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --text-muted: #9ca3af;
+  --accent-color: #60a5fa;
+  --card-bg: #1e2027;
+  --photo-bg: #2d2621;
+  --border-color: #2e323d;
+  --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --toggle-bg: #272a34;
+  --toggle-border: #3f4453;
+  --toggle-icon: #fbbf24;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility: Skip to Main Content Link
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 1.5rem;
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 0.75rem 1.25rem;
+  z-index: 1000;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 1.5rem;
+  outline: 3px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Layout Containers
+   -------------------------------------------------------------------------- */
+.wrapper {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 3.5rem 2rem 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------------------------
+   Theme Toggle Button (Floating Top Right)
+   -------------------------------------------------------------------------- */
+.theme-toggle-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  background-color: var(--toggle-bg);
+  border: 1px solid var(--toggle-border);
+  color: var(--toggle-icon);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.08) rotate(10deg);
+}
+
+.theme-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.theme-toggle-btn .sun-icon {
+  display: none;
+}
+
+.theme-toggle-btn .moon-icon {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle-btn .sun-icon {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle-btn .moon-icon {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   Hero Header
+   -------------------------------------------------------------------------- */
+.hero-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeIn 0.8s ease forwards;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 0.9rem;
+}
+
+.hero-subtitle {
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   Profile Card (3 Columns Layout)
+   -------------------------------------------------------------------------- */
+.profile-container {
+  width: 100%;
+  margin-bottom: 3.5rem;
+  opacity: 0;
+  transform: translateY(25px);
+  animation: heroFadeIn 0.9s ease 0.2s forwards;
+}
+
+.profile-card {
+  display: grid;
+  grid-template-columns: 240px 1.4fr 1.1fr;
+  column-gap: 3.5rem;
+  row-gap: 2.5rem;
+  align-items: start;
+}
+
+/* Column 1: Photo */
+.profile-col-photo {
+  display: flex;
+  justify-content: center;
+}
+
+.photo-card {
+  width: 100%;
+  max-width: 240px;
+  background-color: var(--photo-bg);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-subtle);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.photo-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.profile-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  transition: transform 0.4s ease;
+}
+
+.photo-card:hover .profile-img {
+  transform: scale(1.03);
+}
+
+/* Column 2: About Me */
+.profile-col-about {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.col-title {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.4rem;
+  letter-spacing: -0.02em;
+}
+
+.about-content p {
+  font-size: 0.98rem;
+  line-height: 1.78;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+}
+
+.attribution {
+  margin-top: 0.5rem;
+}
+
+.attribution-link {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.attribution-link:hover {
+  color: var(--accent-color);
+  opacity: 0.9;
+}
+
+/* Column 3: Details & Socials */
+.profile-col-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.detail-label {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* Social Icons (WCAG 2.5.8 Compliant Touch Targets >= 44x44px) */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  border-radius: 50%;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: transform 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+  position: relative;
+}
+
+.social-icon svg {
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.social-icon:hover {
+  background-color: var(--toggle-bg);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+.social-icon:hover svg {
+  transform: scale(1.15);
+}
+
+.social-icon:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.page-footer {
+  text-align: center;
+  padding: 2rem 0 1rem 0;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 300;
+  transition: border-color var(--transition-speed) ease;
+}
+
+/* --------------------------------------------------------------------------
+   Keyframe Animations
+   -------------------------------------------------------------------------- */
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Media Queries
+   -------------------------------------------------------------------------- */
+
+/* Tablet View (Max 960px) */
+@media screen and (max-width: 960px) {
+  .wrapper {
+    padding: 3rem 1.75rem;
+  }
+
+  .profile-card {
+    grid-template-columns: 220px 1fr;
+    column-gap: 2.5rem;
+    row-gap: 2.5rem;
+  }
+
+  /* Span details across bottom on mid-screens */
+  .profile-col-details {
+    grid-column: 1 / -1;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 2rem;
+  }
+
+  .details-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile View (Max 680px) */
+@media screen and (max-width: 680px) {
+  .wrapper {
+    padding: 2.5rem 1.25rem 2rem 1.25rem;
+  }
+
+  .theme-toggle-btn {
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+  }
+
+  .hero-header {
+    margin-bottom: 2.75rem;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+  }
+
+  .profile-card {
+    grid-template-columns: 1fr;
+    row-gap: 2.25rem;
+    text-align: left;
+  }
+
+  .profile-col-photo {
+    justify-content: center;
+  }
+
+  .photo-card {
+    max-width: 220px;
+  }
+
+  .col-title {
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .details-list {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .social-links {
+    margin-top: 0.75rem;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
